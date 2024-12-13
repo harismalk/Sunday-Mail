@@ -1,0 +1,27 @@
+.header {
+    background-color: #292929;
+    padding: 1rem;
+    border-bottom: 1px solid #444;
+  }
+  .header-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #fff;
+  }
+  .sidebar {
+    width: 200px;
+    background-color: #292929;
+    height: 100vh;
+    padding: 1rem;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    color: #fff;
+    text-decoration: none;
+  }
+  .sidebar-link:hover {
+    background-color: #444;
+  }
+  

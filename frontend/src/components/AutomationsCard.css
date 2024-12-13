@@ -1,0 +1,42 @@
+.automation-card {
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 15px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .card-description {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  
+  .btn {
+    background: var(--btn-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
+    margin-left: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .btn:hover {
+    background: var(--btn-hover);
+  }
+  

@@ -1,0 +1,44 @@
+.main-content {
+    flex: 1;
+    background-color: #1e1e1e;
+    color: #fff;
+    padding: 20px;
+  }
+  
+  .actions {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    background-color: #ffa500;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .automation-list {
+    margin-top: 20px;
+  }
+  
+  .automation-item {
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .automation-item .label {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .automation-item .actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  

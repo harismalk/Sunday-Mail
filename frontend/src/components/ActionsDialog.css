@@ -1,0 +1,30 @@
+.dialog-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dialog {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--text-color);
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .btn-close {
+    background: var(--btn-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  

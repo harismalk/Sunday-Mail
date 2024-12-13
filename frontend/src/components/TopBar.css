@@ -1,0 +1,17 @@
+.topbar {
+    background: var(--bg-color);
+    border-bottom: 1px solid #333;
+    padding: 10px 20px;
+    color: var(--text-color);
+  }
+  
+  .topbar-content h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .topbar-content span {
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+  

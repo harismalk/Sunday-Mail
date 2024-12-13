@@ -1,0 +1,14 @@
+.page {
+    display: flex;
+  }
+  .page-content {
+    flex: 1;
+    padding: 2rem;
+  }
+  .card {
+    background-color: #333;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  

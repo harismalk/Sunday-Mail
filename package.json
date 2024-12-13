@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "googleapis": "^144.0.0",
+    "mongoose": "^8.8.4",
+    "node-cron": "^3.0.3",
+    "react-router-dom": "^7.0.2",
+    "twilio": "^5.3.7"
+  }
+}

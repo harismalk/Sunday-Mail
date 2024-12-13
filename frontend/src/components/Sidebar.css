@@ -1,0 +1,35 @@
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+}
+
+.sidebar-header {
+  font-size: 1.5rem;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.nav-link {
+  padding: 15px 20px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: #333;
+}
+
+.nav-link.active {
+  background: var(--accent-color);
+  color: #000;
+}
