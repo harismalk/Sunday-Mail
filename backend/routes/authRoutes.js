@@ -2,11 +2,12 @@ const express = require('express');
 const passport = require('passport');
 const User = require('../models/User');
 const router = express.Router();
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 router.get('/google', passport.authenticate('google'));
 
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }),
+  passport.authenticate('google', { failureRedirect: `${FRONTEND_URL}/login` }),
   async (req, res) => {
     const userEmail = req.user.profile.emails[0].value;
     const displayName = req.user.profile.displayName ||
@@ -41,7 +42,7 @@ router.get('/google/callback',
     }
 
     await user.save();
-    res.redirect('http://localhost:3000/');
+    res.redirect(`${FRONTEND_URL}/`);
   }
 );
 

@@ -4,6 +4,11 @@ import ActionsDialog from '../components/ActionsDialog';
 import CreateLabelDialog from '../components/CreateLabelDialog';
 import { getAutomations, createAutomation } from '../services/api';
 
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://sunday-mail-api.onrender.com'
+    : 'http://localhost:5001';
+
 export default function AutomationsPage() {
   const [automations, setAutomations] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -30,7 +35,7 @@ export default function AutomationsPage() {
   };
 
 async function handleLabelCreated(payload) {
-  await fetch('http://localhost:5001/api/automations', {
+  await fetch('${API_URL}/api/automations', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -41,7 +46,7 @@ async function handleLabelCreated(payload) {
   
 
   async function handleBuildFromInstructions(instructions) {
-    const res = await fetch('http://localhost:5001/api/automations/rebuild', {
+    const res = await fetch(`${API_URL}/api/automations/rebuild`, {
       method: 'POST',
       credentials: 'include',
       headers: {'Content-Type':'application/json'},
@@ -53,7 +58,7 @@ async function handleLabelCreated(payload) {
 
   async function onActionsSaved(automationId, actions) {
     // PATCH request to update automation actions
-    const res = await fetch(`http://localhost:5001/api/automations/${automationId}`, {
+    const res = await fetch(`${API_URL}/api/automations/${automationId}`, {
       method: 'PATCH',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

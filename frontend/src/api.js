@@ -1,4 +1,7 @@
-const API_URL = 'http://localhost:5001';
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://sunday-mail-api.onrender.com'
+    : 'http://localhost:5001';
 
 export async function getUser() {
   const res = await fetch(`${API_URL}/api/auth/user`, { credentials: 'include' });

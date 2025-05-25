@@ -13,7 +13,7 @@ passport.use(
     {
       clientID: process.env.GMAIL_CLIENT_ID,
       clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5001/api/auth/google/callback',
+      callbackURL: `${process.env.BACKEND_URL}/api/auth/google/callback`,
       scope: [
         'openid',
         'email',

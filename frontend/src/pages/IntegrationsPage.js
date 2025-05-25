@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getIntegrations } from '../services/api';
 
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://sunday-mail-api.onrender.com'
+    : 'http://localhost:5001';
+
 export default function IntegrationsPage() {
   const [accounts, setAccounts] = useState([]);
 
@@ -11,7 +16,7 @@ export default function IntegrationsPage() {
   }, []);
 
   const handleConnectGmail = () => {
-    window.location.href = 'http://localhost:5001/api/auth/google';
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   return (

@@ -1,10 +1,15 @@
 import React from 'react';
 
+const API_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://sunday-mail-api.onrender.com'
+    : 'http://localhost:5001';
+
 export default function LoginPage() {
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5001/api/auth/google';
+    window.location.href = `${API_URL}/api/auth/google`;
   };
-
+  
   return (
     <div className="login-page">
       <h1>Welcome to Sunday</h1>
