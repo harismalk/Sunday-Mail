@@ -29,15 +29,15 @@ export default function AutomationsPage() {
     setDialogOpen(true);
   };
 
-  async function handleLabelCreated(payload) {
-    await fetch('http://localhost:5001/api/automations', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(payload),
-    });
-    loadAutomations();
-  }
+async function handleLabelCreated(payload) {
+  await fetch('http://localhost:5001/api/automations', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(payload),
+  });
+  loadAutomations();
+}
   
 
   async function handleBuildFromInstructions(instructions) {

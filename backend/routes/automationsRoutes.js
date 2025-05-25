@@ -23,9 +23,10 @@ router.get('/', requireAuth, async (req, res) => {
 });
 
 // Create a new automation
+// Create a new automation with instructions handling
 router.post('/', requireAuth, async (req, res) => {
   try {
-    const { label, description, conditions, actions } = req.body;
+    const { label, description, conditions, actions, instructions } = req.body; // Added instructions
     const email = req.user.profile.emails[0].value;
     const user = await User.findOne({ email });
     if (!user) {
@@ -38,11 +39,12 @@ router.post('/', requireAuth, async (req, res) => {
       description,
       conditions,
       actions: actions || {},
+      instructions, // Save instructions to the automation document
     });
 
     await automation.save();
 
-    // Create Gmail label
+    // Create Gmail label if applicable
     try {
       await createGmailLabel(user, label);
       console.log(`Gmail label "${label}" created successfully.`);
@@ -56,6 +58,7 @@ router.post('/', requireAuth, async (req, res) => {
     res.status(400).json({ error: error.message || 'Failed to create automation' });
   }
 });
+
 
 // Update an existing automation
 router.patch('/:id', requireAuth, async (req, res) => {

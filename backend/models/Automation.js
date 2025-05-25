@@ -31,6 +31,10 @@ const automationSchema = new mongoose.Schema({
     textNotification: { type: Boolean, default: false },
     phoneNumber: { type: String, default: '' },
   },
+  instructions: { 
+    type: String, 
+    default: '' // Natural language instructions field
+  },
   isActive: { 
     type: Boolean, 
     default: true 
