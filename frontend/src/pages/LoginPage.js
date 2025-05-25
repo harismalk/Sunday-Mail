@@ -2,8 +2,9 @@ import React from 'react';
 
 const API_URL =
   process.env.NODE_ENV === 'production'
-    ? 'https://sunday-mail-api.onrender.com'
+    ? 'https://sunday-mail.onrender.com'
     : 'http://localhost:5001';
+
 
 export default function LoginPage() {
   const handleGoogleLogin = () => {
