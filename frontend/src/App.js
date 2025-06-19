@@ -10,20 +10,26 @@ import MemoriesPage from './pages/MemoriesPage';
 import SettingsPage from './pages/SettingsPage';
 import InstructionsPage from './pages/InstructionsPage';
 import LoginPage from './pages/LoginPage';
-import ActionsPage from './pages/ActionsPage'; // Import the new ActionsPage
+import ActionsPage from './pages/ActionsPage';
 import { getUser } from './services/api';
 import './App.css';
 import './components/DarkTheme.css';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
 
   useEffect(() => {
     getUser()
       .then(u => setUser(u))
-      .catch(() => {});
+      .catch(() => setUser(null));
   }, []);
 
+  // While checking auth, show nothing or a loader
+  if (user === undefined) {
+    return <div>Loading…</div>;
+  }
+
+  // If not logged in, show login routes only
   if (!user) {
     return (
       <div className="login-container">
@@ -37,6 +43,7 @@ function App() {
     );
   }
 
+  // When logged in, render the full app
   return (
     <div className="app-container">
       <Router>
@@ -50,9 +57,12 @@ function App() {
               <Route path="/automations" element={<AutomationsPage />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/memories" element={<MemoriesPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              <Route
+                path="/settings"
+                element={<SettingsPage onLogout={() => setUser(null)} />}
+              />
               <Route path="/instructions" element={<InstructionsPage />} />
-              <Route path="/actions" element={<ActionsPage />} /> {/* New route */}
+              <Route path="/actions" element={<ActionsPage />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </div>

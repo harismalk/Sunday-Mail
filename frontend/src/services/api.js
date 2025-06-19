@@ -76,3 +76,11 @@ export async function sendChatMessage(message) {
   });
   return res.json();
 }
+
+export async function logoutUser() {
+  const res = await fetch(`${API_URL}/api/auth/logout`, {
+    method: 'POST',
+    credentials: 'include'
+  });
+  return res.json();
+}
