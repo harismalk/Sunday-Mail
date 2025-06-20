@@ -4,13 +4,13 @@
 
 ---
 
-## ✨ Overview
+## Overview
 
-**Sunday Mail** is a modern, full-stack automation platform for email processing, built to help users manage, categorize, and automate their inbox workflows with ease. Featuring a beautiful, glassmorphic UI and powerful backend automations, Sunday Mail is designed for productivity and clarity.
+**Sunday Mail** is a modern, full-stack automation platform for email processing, built to help users manage, categorize, and automate their inbox workflows with ease.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Google OAuth Login**: Secure authentication with Google accounts
 - **Automated Email Processing**: Categorize, label, and automate actions on incoming emails
@@ -22,7 +22,7 @@
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React 18, React Router, Framer Motion, CSS Modules
 - **Backend**: Node.js, Express, Passport.js, Google APIs, MongoDB (Mongoose)
@@ -32,7 +32,7 @@
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### 1. Clone the Repository
 ```bash
@@ -74,7 +74,7 @@ cd ../frontend && npm install
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 Sunday-Mail/
