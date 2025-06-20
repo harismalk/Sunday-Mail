@@ -85,18 +85,4 @@ Sunday-Mail/
 
 ---
 
-## 📝 Contributing & Feedback
-
-This project is in **testing**. If you would like to try it out, contribute, or have feedback, please reach out to:
-
-**📧 [sundaydeveleopers@gmail.com](mailto:sundaydeveleopers@gmail.com)**
-
----
-
-## 📄 License
-
-This project is licensed for testing and evaluation purposes only.
-
----
-
 <p align="center"><b>Made by Haris Malik, inspired by https://www.friday.so</b></p>
