@@ -62,7 +62,7 @@ cd ../frontend && npm install
 - **Backend:**
   ```bash
   cd backend
-  npm start
+  node server.js
   ```
 - **Frontend:**
   ```
