@@ -39,6 +39,8 @@ async function categorizeAndApplyAutomations(user, email) {
     }
 
     let matched = false;
+    let actionsTaken = [];
+    let labelApplied = 'None';
     for (let auto of automations) {
       console.log(`Checking automation "${auto.label}" (ID: ${auto._id}) for email: "${subject}"`);
       
@@ -51,7 +53,8 @@ async function categorizeAndApplyAutomations(user, email) {
 
       if (subjectMatch || bodyMatch) {
         console.log(`Email matched label: "${auto.label}" with subject "${email.subject}"`);
-        const actionsTaken = [];
+        actionsTaken = [];
+        labelApplied = auto.label;
 
         // 1. Mark Important
         if (auto.actions.markImportant) {
@@ -147,33 +150,60 @@ async function categorizeAndApplyAutomations(user, email) {
         }
 
         // 7. Log the processed email, including sender and subject
-        await EmailLog.create({
-          userId:      user._id,
-          emailId:     email.id,
-          from:        email.from,
-          subject:     email.subject,
-          labelApplied: auto.label,
-          actionsTaken,
-          processedAt: new Date(),
-        });
+        try {
+          console.log('Attempting to log email:', {
+            userId: user._id,
+            emailId: email.id,
+            from: email.from,
+            subject: email.subject,
+            labelApplied,
+            actionsTaken,
+          });
+          await EmailLog.create({
+            userId:      user._id,
+            emailId:     email.id,
+            from:        email.from,
+            subject:     email.subject,
+            labelApplied,
+            actionsTaken,
+            processedAt: new Date(),
+          });
+          console.log('Successfully logged email:', email.id);
+        } catch (err) {
+          console.error('Error creating EmailLog:', err);
+        }
         matched = true;
-        return { label: auto.label, actionsTaken };
+        break; // Only log the first matching automation
       }
     }
 
     // If no automations matched, log the email with a default entry
     if (!matched) {
-      await EmailLog.create({
-        userId:      user._id,
-        emailId:     email.id,
-        from:        email.from,
-        subject:     email.subject,
-        labelApplied: 'None',
-        actionsTaken: ['no automations matched'],
-        processedAt: new Date(),
-      });
+      try {
+        console.log('No automations matched, logging email:', {
+          userId: user._id,
+          emailId: email.id,
+          from: email.from,
+          subject: email.subject,
+          labelApplied: 'None',
+          actionsTaken: ['no automations matched'],
+        });
+        await EmailLog.create({
+          userId:      user._id,
+          emailId:     email.id,
+          from:        email.from,
+          subject:     email.subject,
+          labelApplied: 'None',
+          actionsTaken: ['no automations matched'],
+          processedAt: new Date(),
+        });
+        console.log('Successfully logged unmatched email:', email.id);
+      } catch (err) {
+        console.error('Error creating unmatched EmailLog:', err);
+      }
       return { label: 'None', actionsTaken: ['no automations matched'] };
     }
+    return { label: labelApplied, actionsTaken };
   } catch (error) {
     console.error('Error in categorizeAndApplyAutomations:', error);
     throw new Error('Failed to apply automations.');
