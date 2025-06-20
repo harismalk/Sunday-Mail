@@ -11,6 +11,8 @@ const path = require('path');
 
 require('./config/db')();
 require('./passport/googleStrategy');
+const MongoStore = require('connect-mongo');
+
 
 const authRoutes = require('./routes/authRoutes');
 const draftRoutes = require('./routes/draftRoutes');
@@ -43,10 +45,14 @@ app.use(
     secret: process.env.SESSION_SECRET || 'your-secret',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI, // Use your MongoDB connection string
+      collectionName: 'sessions',
+    }),
     cookie: {
-      secure: isProduction,               // only HTTPS in prod
+      secure: isProduction,
       httpOnly: true,
-      sameSite: isProduction ? 'none' : 'lax'  // allow OAuth redirect in dev
+      sameSite: isProduction ? 'none' : 'lax'
     }
   })
 );
