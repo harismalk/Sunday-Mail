@@ -1,6 +1,7 @@
 // frontend/src/pages/MemoriesPage.js
 import React, { useEffect, useState } from 'react';
 import './MemoriesPage.css';
+import { getEmailLogs } from '../services/api';
 
 export default function MemoriesPage() {
   const [logs, setLogs] = useState([]);
@@ -32,23 +33,7 @@ export default function MemoriesPage() {
       try {
       setLoading(true);
       setError(null);
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: 20,
-        ...(searchTerm && { search: searchTerm }),
-        ...(filter !== 'all' && { filter })
-      });
-
-      const res = await fetch(`http://localhost:5001/api/email-logs/logs?${params}`, {
-          credentials: 'include',
-        });
-      
-      if (!res.ok) {
-        throw new Error(`Server returned ${res.status}: ${res.statusText}`);
-      }
-      
-        const data = await res.json();
-      
+      const data = await getEmailLogs();
       if (!data || !Array.isArray(data.logs)) {
         console.warn('API returned unexpected data format:', data);
         setLogs([]);

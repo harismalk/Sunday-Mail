@@ -26,8 +26,7 @@ export default function Sidebar() {
     { path: '/', icon: '🏠', label: 'Home' },
     { path: '/integrations', icon: '🔗', label: 'Integrations' },
     { path: '/automations', icon: '⚡', label: 'Automations' },
-    { path: '/memories', icon: '📚', label: 'Memories' },
-    { path: '/instructions', icon: '📝', label: 'Instructions' }
+    { path: '/memories', icon: '📚', label: 'Memories' }
   ];
 
   const getActiveItem = () => {
@@ -65,15 +64,6 @@ export default function Sidebar() {
             </div>
           )}
         </div>
-        <button 
-          className="collapse-btn"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          <span className="collapse-icon">
-            {isCollapsed ? '→' : '←'}
-          </span>
-        </button>
       </div>
       {/* Navigation */}
       <nav className="sidebar-nav">
