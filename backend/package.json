@@ -23,6 +23,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "react-scripts": "^5.0.1",
+    "twilio": "^5.7.1",
     "web-push": "^3.6.7"
   }
 }
