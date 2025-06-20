@@ -31,7 +31,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL, // e.g., 'https://sunday-mail.vercel.app'
   credentials: true,
 }));
 app.use(bodyParser.json());
@@ -46,9 +46,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: isProduction,               // only HTTPS in prod
+      secure: true,               // only HTTPS in prod
       httpOnly: true,
-      sameSite: isProduction ? 'none' : 'lax'  // allow OAuth redirect in dev
+      sameSite: isProduction ? 'none' : 'none'  // allow OAuth redirect in dev
     }
   })
 );
