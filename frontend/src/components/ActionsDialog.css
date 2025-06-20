@@ -1,30 +1,181 @@
 .dialog-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .dialog {
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: 8px;
-    color: var(--text-color);
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  .btn-close {
-    background: var(--btn-bg);
-    color: var(--text-color);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: var(--card-bg);
+  color:      var(--text-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  padding: 16px;
+}
+
+.dialog-large {
+  width:     600px;
+  max-width: 90vw;
+}
+
+.dialog h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.dialog-subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.field-group {
+  margin-bottom: 16px;
+}
+
+.field-group label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.field-group input,
+.field-group textarea {
+  width:       100%;
+  padding:     8px;
+  border:      none;
+  border-radius: 4px;
+  box-sizing:  border-box;
+}
+
+.instruction-preview {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(40, 170, 255, 0.1);
+  border-radius: 4px;
+  font-size: 14px;
+  color: #28a;
+}
+
+.actions-list {
+  list-style: none;
+  padding:     0;
+  margin:      0 0 16px 0;
+}
+
+.action-item {
+  padding:      12px;
+  border-bottom: 1px solid #444;
+  cursor:       pointer;
+  display:      flex;
+  align-items:  center;
+  justify-content: space-between;
+  transition:   background-color 0.2s;
+}
+
+.action-item:hover {
+  background: #333;
+}
+
+.action-item.configured {
+  border-left: 3px solid #28a;
+}
+
+.action-item.enabled {
+  border-left: 3px solid #2a8;
+}
+
+.action-item.disabled {
+  border-left: 3px solid #666;
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.action-icon {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+}
+
+.action-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.action-name {
+  font-weight: 500;
+}
+
+.action-instructions,
+.action-forward-to,
+.action-phone {
+  font-size: 12px;
+  color: #888;
+  font-style: italic;
+}
+
+.action-status {
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.configured {
+  background: #28a;
+  color: white;
+}
+
+.status-badge.enabled {
+  background: #2a8;
+  color: white;
+}
+
+.status-badge.disabled {
+  background: #666;
+  color: #ccc;
+}
+
+.button-row {
+  display:      flex;
+  gap:          8px;
+  justify-content: flex-end;
+  margin-top:   16px;
+}
+
+.btn {
+  background: #28a;
+  color:      #fff;
+}
+
+.btn-close {
+  background: var(--btn-bg);
+  color:      var(--text-color);
+}
+
+.btn-danger {
+  background: #c33;
+  color:      #fff;
+}
+
+.btn, .btn-close, .btn-danger {
+  border:       none;
+  padding:      8px 12px;
+  border-radius: 4px;
+  cursor:       pointer;
+}

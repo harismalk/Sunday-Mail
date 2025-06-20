@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const User = require('../models/User');
 
 function getOAuth2Client(user) {
   const oauth2Client = new google.auth.OAuth2(
@@ -6,10 +7,27 @@ function getOAuth2Client(user) {
     process.env.GMAIL_CLIENT_SECRET,
     `${process.env.BACKEND_URL}/api/auth/google/callback`
   );
+
   oauth2Client.setCredentials({
-    access_token: user.accessToken,
+    access_token:  user.accessToken,
     refresh_token: user.refreshToken,
+    expiry_date:   user.expiryDate,
   });
+
+  // Whenever Google issues new tokens, persist them:
+  oauth2Client.on('tokens', async (tokens) => {
+    const updates = {};
+    if (tokens.access_token)  updates.accessToken  = tokens.access_token;
+    if (tokens.refresh_token) updates.refreshToken = tokens.refresh_token;
+    if (tokens.expiry_date)   updates.expiryDate   = tokens.expiry_date;
+    if (Object.keys(updates).length) {
+      await User.updateOne(
+        { googleId: user.googleId },
+        { $set: updates }
+      );
+    }
+  });
+
   return oauth2Client;
 }
 
@@ -73,7 +91,7 @@ async function applyGmailLabel(user, emailId, labelName) {
 async function fetchEmails(user) {
   const oauth2Client = getOAuth2Client(user);
   const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
-  const res = await gmail.users.messages.list({ userId: 'me', maxResults: 10 });
+  const res = await gmail.users.messages.list({ userId: 'me', maxResults: 10000 });
   const messages = res.data.messages || [];
   const emails = [];
 

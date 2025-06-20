@@ -14,3 +14,100 @@
   padding: 20px;
   overflow-y: auto;
 }
+
+/* CreateLabelDialog Enhancements */
+.feature-badge {
+  background: #28a;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.feature-description {
+  color: #888;
+  font-size: 14px;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.examples-section {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(40, 170, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(40, 170, 255, 0.2);
+}
+
+.examples-section h4 {
+  margin: 0 0 8px 0;
+  color: #28a;
+  font-size: 14px;
+}
+
+.examples-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.examples-list li {
+  padding: 6px 8px;
+  margin: 4px 0;
+  background: rgba(40, 170, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.examples-list li:hover {
+  background: rgba(40, 170, 255, 0.2);
+}
+
+.instruction-preview {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(42, 136, 136, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(42, 136, 136, 0.2);
+}
+
+.instruction-preview h4 {
+  margin: 0 0 8px 0;
+  color: #2a8;
+  font-size: 14px;
+}
+
+.instruction-preview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.instruction-preview li {
+  padding: 4px 0;
+  font-size: 13px;
+  color: #2a8;
+}
+
+/* Dialog Enhancements */
+.dialog input[type="text"],
+.dialog textarea {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid #444;
+}
+
+.dialog input[type="text"]:focus,
+.dialog textarea:focus {
+  border-color: #28a;
+  outline: none;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

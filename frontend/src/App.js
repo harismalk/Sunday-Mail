@@ -5,7 +5,6 @@ import TopBar from './components/TopBar';
 import HomePage from './pages/HomePage';
 import IntegrationsPage from './pages/IntegrationsPage';
 import AutomationsPage from './pages/AutomationsPage';
-import ChatPage from './pages/ChatPage';
 import MemoriesPage from './pages/MemoriesPage';
 import SettingsPage from './pages/SettingsPage';
 import InstructionsPage from './pages/InstructionsPage';
@@ -55,7 +54,6 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/integrations" element={<IntegrationsPage />} />
               <Route path="/automations" element={<AutomationsPage />} />
-              <Route path="/chat" element={<ChatPage />} />
               <Route path="/memories" element={<MemoriesPage />} />
               <Route
                 path="/settings"

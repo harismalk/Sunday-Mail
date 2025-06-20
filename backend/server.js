@@ -5,6 +5,9 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const cron = require('node-cron');
+const {google} = require('googleapis');
+const fs = require('fs');
+const path = require('path');
 
 require('./config/db')();
 require('./passport/googleStrategy');
@@ -24,6 +27,8 @@ const User = require('./models/User');
 
 
 const app = express();
+
+
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -62,8 +67,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/user-config', userConfigRoutes);
 
 // Automated Email Processing
-cron.schedule('*/5 * * * *', async () => {
-  console.log('Running automated email processing...');
+cron.schedule('*/15 * * * * *', async () => {  console.log('Running automated email processing...');
   try {
     const users = await User.find(); // Fetch all users
     for (let user of users) {
@@ -82,6 +86,9 @@ cron.schedule('*/5 * * * *', async () => {
     console.error('Error in automated email processing:', error);
   }
 });
+
+const emailLogsRoutes = require('./routes/emailRoutes'); // or logRoutes
+app.use('/api/email-logs', emailLogsRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

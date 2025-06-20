@@ -19,3 +19,17 @@
     background-color: #ff3333;
   }
   
+  .memories-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .memories-table th,
+.memories-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  color: #000;             
+}
+  .memories-table th {
+    background: #f9f9f9;
+    text-align: left;
+  }

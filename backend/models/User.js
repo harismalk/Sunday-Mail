@@ -1,3 +1,4 @@
+// backend/models/User.js
 const mongoose = require('mongoose');
 
 const integratedAccountSchema = new mongoose.Schema({
@@ -7,13 +8,14 @@ const integratedAccountSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  name: String,
-  provider: String,
-  googleId: String,
+  email:       { type: String, required: true, unique: true },
+  name:        String,
+  provider:    String,
+  googleId:    String,
   accessToken: String,
-  refreshToken: String,
-  instructions: { type: String, default: '' },
+  refreshToken:String,
+  expiryDate:  Number,     
+  instructions:{ type: String, default: '' },
   integratedAccounts: [integratedAccountSchema],
 });
 

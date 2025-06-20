@@ -1,0 +1,31 @@
+/* frontend/src/pages/MemoriesPage.css */
+.memories-page {
+    padding: 20px;
+  }
+  
+  .memories-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  
+  .memories-table th,
+  .memories-table td {
+    border: 1px solid #444;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  
+  .memories-table th {
+    background: #333;
+    color: #fff;
+  }
+  
+  .memories-table td {
+    background: #222;
+    color: #eee;
+  }
+  
+  .error {
+    color: #f66;
+  }

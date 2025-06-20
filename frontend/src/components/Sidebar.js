@@ -10,7 +10,6 @@ export default function Sidebar() {
         <NavLink to="/" className="nav-link">Home</NavLink>
         <NavLink to="/integrations" className="nav-link">Integrations</NavLink>
         <NavLink to="/automations" className="nav-link">Automations</NavLink>
-        <NavLink to="/chat" className="nav-link">Chat</NavLink>
         <NavLink to="/memories" className="nav-link">Memories</NavLink>
         <NavLink to="/instructions" className="nav-link">Instructions</NavLink>
         <NavLink to="/settings" className="nav-link">Settings</NavLink>

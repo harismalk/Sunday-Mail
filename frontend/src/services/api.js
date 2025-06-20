@@ -22,13 +22,18 @@ export async function getAutomations() {
   return Array.isArray(data) ? data : [];
 }
 
+// in services/api.js
 export async function createAutomation(payload) {
   const res = await fetch(`${API_URL}/api/automations`, {
     method: 'POST',
-    credentials: 'include',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
+    credentials: 'include',              // ← required for sessions
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
   });
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Create failed: ${res.status} ${errText}`);
+  }
   return res.json();
 }
 
@@ -84,3 +89,13 @@ export async function logoutUser() {
   });
   return res.json();
 }
+
+
+export async function getEmailLogs() {
+  const res = await fetch(`${API_URL}/api/email-logs/logs`, {
+    credentials: 'include'
+  });
+  if (!res.ok) throw new Error('Could not load email history');
+  return res.json();
+}
+

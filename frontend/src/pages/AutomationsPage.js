@@ -9,88 +9,101 @@ const API_URL =
     ? 'https://sunday-mail.onrender.com'
     : 'http://localhost:5001';
 
-
 export default function AutomationsPage() {
-  const [automations, setAutomations] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [automations, setAutomations]             = useState([]);
+  const [dialogOpen, setDialogOpen]               = useState(false);
+  const [createDialogOpen, setCreateDialogOpen]   = useState(false);
   const [selectedAutomation, setSelectedAutomation] = useState(null);
 
-  function loadAutomations() {
-    getAutomations().then(data => {
-      setAutomations(data);
-    });
-  }
+  const loadAutomations = () =>
+    getAutomations().then(data => setAutomations(data));
 
   useEffect(() => {
     loadAutomations();
   }, []);
 
-  const handleEdit = (auto) => {
-    alert("Edit " + auto.label); 
-  };
-
-  const handleActions = (auto) => {
+  const handleActions = auto => {
     setSelectedAutomation(auto);
     setDialogOpen(true);
   };
 
-async function handleLabelCreated(payload) {
-  await fetch('${API_URL}/api/automations', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(payload),
-  });
-  loadAutomations();
-}
-  
+  async function handleLabelCreated(payload) {
+    try {
+      await createAutomation(payload);
+      loadAutomations();
+      setCreateDialogOpen(false);
+    } catch (err) {
+      console.error('Failed to create automation:', err);
+      alert(err.message);
+    }
+  }
 
   async function handleBuildFromInstructions(instructions) {
-    const res = await fetch(`${API_URL}/api/automations/rebuild`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ instructions })
-    });
-    await res.json();
-    loadAutomations();
+    try {
+      await fetch(`${API_URL}/api/automations/rebuild`, {
+        method: 'POST',
+        credentials: 'include',
+        headers:  { 'Content-Type': 'application/json' },
+        body:     JSON.stringify({ instructions: instructions.trim() }),
+      });
+      loadAutomations();
+      setCreateDialogOpen(false);
+    } catch (err) {
+      console.error('Failed to build automations from instructions:', err);
+      alert(err.message);
+    }
   }
 
   async function onActionsSaved(automationId, actions) {
-    // PATCH request to update automation actions
-    const res = await fetch(`${API_URL}/api/automations/${automationId}`, {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ actions })
-    });
-    const updated = await res.json();
-    loadAutomations();
-    setDialogOpen(false);
-    setSelectedAutomation(null);
+    try {
+      await fetch(`${API_URL}/api/automations/${automationId}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers:  { 'Content-Type': 'application/json' },
+        body:     JSON.stringify({ actions }),
+      });
+      loadAutomations();
+      setDialogOpen(false);
+      setSelectedAutomation(null);
+    } catch (err) {
+      console.error('Failed to save actions:', err);
+      alert(err.message);
+    }
   }
 
   return (
-    <div>
+    <div className="automations-page">
       <h1>Manage Automations</h1>
       <p>Create automations to organize your emails.</p>
-      <button className="btn-primary" style={{marginRight:'10px'}} onClick={() => setCreateDialogOpen(true)}>Create New Label</button>
-      <button className="btn" style={{marginRight:'10px'}}>Import from Email</button>
+      <button
+        className="btn-primary"
+        onClick={() => setCreateDialogOpen(true)}
+      >
+        Create New Automation
+      </button>
 
-      {automations.length > 0 ? automations.map((auto, idx) => (
-        <AutomationsCard
-          key={idx}
-          label={auto.label}
-          description={auto.description}
-          onEdit={() => handleEdit(auto)}
-          onActions={() => handleActions(auto)}
-        />
-      )) : <p>No automations yet. Create one!</p> }
+      {automations.length > 0 ? (
+        automations.map((auto, idx) => (
+          <AutomationsCard
+            key={idx}
+            onActions={() => handleActions(auto)}
+            label={auto.label}
+            description={auto.description}
+          />
+        ))
+      ) : (
+        <p>No automations yet. Create one!</p>
+      )}
 
-      <ActionsDialog open={dialogOpen} onClose={() => setDialogOpen(false)} automation={selectedAutomation} onActionsSaved={onActionsSaved} />
-      <CreateLabelDialog 
-        open={createDialogOpen} 
+      <ActionsDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        automation={selectedAutomation}
+        onActionsSaved={onActionsSaved}
+      />
+
+      <CreateLabelDialog
+        open={createDialogOpen}
         onClose={() => setCreateDialogOpen(false)}
         onLabelCreated={handleLabelCreated}
         onBuildFromInstructions={handleBuildFromInstructions}

@@ -3,6 +3,7 @@ const requireAuth = require('../middleware/requireAuth');
 const { fetchEmails } = require('../controllers/gmail');
 const { categorizeAndApplyAutomations } = require('../controllers/categorize_emails');
 const User = require('../models/User');
+const EmailLog = require('../models/EmailLog');
 
 const router = express.Router();
 
@@ -46,6 +47,17 @@ router.get('/test-fetch-emails', requireAuth, async (req, res) => {
   } catch (error) {
     console.error('Error fetching emails:', error);
     res.status(500).json({ error: 'Failed to fetch emails' });
+  }
+});
+
+router.get('/logs', requireAuth, async (req, res) => {
+  try {
+    const logs = await EmailLog
+      .find({ userId: req.user._id })
+      .sort({ processedAt: -1 });
+    res.json(logs);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not fetch logs' });
   }
 });
 

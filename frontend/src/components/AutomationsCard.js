@@ -10,7 +10,6 @@ export default function AutomationsCard({ label, description, onEdit, onActions 
           <p className="card-description">{description}</p>
         </div>
         <div className="card-actions">
-          <button className="btn" onClick={onEdit}>Edit</button>
           <button className="btn" onClick={onActions}>Actions</button>
         </div>
       </div>
