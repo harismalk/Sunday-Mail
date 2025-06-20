@@ -2,8 +2,8 @@ const { OpenAI } = require('openai');
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-async function generateDraft(subject, body, contextInstructions = '') {
-  const prompt = `Write a professional email draft.
+async function generateDraft(subject, body, contextInstructions = '', senderName = '') {
+  const prompt = `Write a professional email draft. Address the recipient by their name: ${senderName}.
 Subject: ${subject}
 Body: ${body}
 Context: ${contextInstructions}`;

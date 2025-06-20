@@ -50,7 +50,7 @@ export default function CreateLabelDialog({
   const exampleInstructions = [
     "Label all invoices as 'Finance' and draft a professional thank you reply",
     "Mark urgent emails as important and forward them to manager@company.com",
-    "Auto-reply to meeting requests with my availability and send me a text notification",
+    "Auto-reply to meeting requests with my availability",
     "Draft a polite decline for all job applications and mark them as 'Recruitment'"
   ];
 
@@ -59,31 +59,36 @@ export default function CreateLabelDialog({
       <div className="dialog dialog-large">
         <h2>Create New Automation</h2>
 
-        <label>Label Name</label>
-        <input
-          type="text"
-          value={label}
-          onChange={e => setLabel(e.target.value)}
-          placeholder="e.g., Finance, Urgent, Recruitment"
-        />
-
-        <label>Description</label>
-        <input
-          type="text"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          placeholder="Brief description of this automation"
-        />
+        <div className="field-group">
+          <label>Label Name</label>
+          <input
+            type="text"
+            value={label}
+            onChange={e => setLabel(e.target.value)}
+            placeholder="e.g., Finance, Urgent, Recruitment"
+          />
+        </div>
 
         <div className="field-group">
-          <label>
+          <label>Description</label>
+          <input
+            type="text"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            placeholder="Brief description of this automation"
+          />
+        </div>
+
+        <div className="field-group">
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            Use Natural Language Instructions
+            <span className="feature-badge">AI-Powered</span>
             <input
               type="checkbox"
               checked={useInstructions}
               onChange={e => setUseInstructions(e.target.checked)}
-            />{' '}
-            Use Natural Language Instructions
-            <span className="feature-badge">AI-Powered</span>
+              style={{ marginLeft: 8 }}
+            />
           </label>
           {useInstructions && (
             <p className="feature-description">
@@ -121,16 +126,13 @@ export default function CreateLabelDialog({
                     <li>✅ Mark emails as important</li>
                   )}
                   {instructions.toLowerCase().includes('draft') && (
-                    <li>✅ Auto-draft replies with custom instructions</li>
+                    <li>✅ Auto-draft replies with custom instructions (will address the sender by name)</li>
                   )}
                   {instructions.toLowerCase().includes('reply') && (
-                    <li>✅ Auto-reply with custom instructions</li>
+                    <li>✅ Auto-reply with custom instructions (will address the sender by name)</li>
                   )}
                   {instructions.toLowerCase().includes('forward') && (
                     <li>✅ Auto-forward emails</li>
-                  )}
-                  {instructions.toLowerCase().includes('text') && (
-                    <li>✅ Send text notifications</li>
                   )}
                 </ul>
               </div>

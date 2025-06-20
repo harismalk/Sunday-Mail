@@ -10,7 +10,7 @@ import SettingsPage from './pages/SettingsPage';
 import InstructionsPage from './pages/InstructionsPage';
 import LoginPage from './pages/LoginPage';
 import ActionsPage from './pages/ActionsPage';
-import { getUser } from './services/api';
+import { getUser, logoutUser } from './services/api';
 import './App.css';
 import './components/DarkTheme.css';
 
@@ -42,13 +42,20 @@ function App() {
     );
   }
 
+  async function handleLogout() {
+    try {
+      await logoutUser();
+    } catch (e) {}
+    setUser(null);
+  }
+
   // When logged in, render the full app
   return (
     <div className="app-container">
       <Router>
         <Sidebar />
         <div className="main-content">
-          <TopBar userName={user.name} />
+          <TopBar userName={user.name} userEmail={user.email} onLogout={handleLogout} />
           <div className="page-content">
             <Routes>
               <Route path="/" element={<HomePage />} />

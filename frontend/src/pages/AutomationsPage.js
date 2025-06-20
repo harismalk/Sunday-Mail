@@ -76,9 +76,10 @@ export default function AutomationsPage() {
       <h1>Manage Automations</h1>
       <p>Create automations to organize your emails.</p>
       <button
-        className="btn-primary"
+        className="create-automation-btn"
         onClick={() => setCreateDialogOpen(true)}
       >
+        <span className="create-automation-icon">➕</span>
         Create New Automation
       </button>
 

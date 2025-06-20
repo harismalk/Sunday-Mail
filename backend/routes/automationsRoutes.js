@@ -77,7 +77,7 @@ router.post('/rebuild', requireAuth, async (req, res) => {
         { role: 'user',   content: instructions }
       ],
       temperature: 0.2,
-      max_tokens: 800
+      max_tokens: 1000
     });
 
     const text = completion.choices[0].message.content.trim();
@@ -87,37 +87,120 @@ router.post('/rebuild', requireAuth, async (req, res) => {
       if (!Array.isArray(parsed)) throw new Error('Expected JSON array');
     } catch (err) {
       console.error('Invalid JSON from OpenAI:', text);
-      return res.status(502).json({ error: 'AI returned invalid JSON' });
+      return res.status(502).json({ 
+        error: 'AI returned invalid JSON',
+        details: 'Please try rephrasing your instructions or contact support.'
+      });
     }
 
-    // Delete old automations
-    await Automation.deleteMany({ userId: user._id });
+    // Validate and normalize automation objects
+    const validatedAutomations = parsed.map((rule, index) => {
+      if (!rule.label) {
+        throw new Error(`Automation ${index + 1} is missing a label`);
+      }
 
-    // Build new automation documents
-    const docs = parsed.map(rule => ({
-      userId:      user._id,
-      label:       rule.label,
-      description: rule.description || '',
-      conditions:  rule.conditions || { subjectContains: [], bodyContains: [] },
-      actions:     rule.actions || {},
-      isActive:    true
-    }));
+      // Ensure actions object exists and has proper structure
+      const actions = {
+        markImportant: false,
+        autoDraft: false,
+        autoDraftInstructions: '',
+        autoReply: false,
+        autoReplyInstructions: '',
+        autoForward: false,
+        autoForwardInstructions: '',
+        forwardTo: '',
+        textNotification: false,
+        phoneNumber: '',
+        ...rule.actions
+      };
+
+      // Extract email addresses from instructions if forwardTo is not set
+      if (actions.autoForward && !actions.forwardTo) {
+        const emailMatch = instructions.match(/[\w.-]+@[\w.-]+\.\w+/);
+        if (emailMatch) {
+          actions.forwardTo = emailMatch[0];
+        }
+      }
+
+      // Extract phone numbers from instructions if phoneNumber is not set
+      if (actions.textNotification && !actions.phoneNumber) {
+        const phoneMatch = instructions.match(/\+?[\d\s\-\(\)]{10,}/);
+        if (phoneMatch) {
+          actions.phoneNumber = phoneMatch[0].replace(/\s+/g, '');
+        }
+      }
+
+      return {
+        userId: user._id,
+        label: rule.label.trim(),
+        description: (rule.description || '').trim(),
+        conditions: {
+          subjectContains: Array.isArray(rule.conditions?.subjectContains) 
+            ? rule.conditions.subjectContains.filter(Boolean) 
+            : [],
+          bodyContains: Array.isArray(rule.conditions?.bodyContains) 
+            ? rule.conditions.bodyContains.filter(Boolean) 
+            : [],
+        },
+        actions,
+        isActive: true
+      };
+    });
+
+    // Soft delete old automations by setting isActive to false
+    await Automation.updateMany(
+      { userId: user._id },
+      { isActive: false, updatedAt: new Date() }
+    );
+
+    console.log(`Soft deleted existing automations for user ${user.email}`);
 
     // Insert and return
-    const created = await Automation.insertMany(docs);
-    res.json(created);
+    const created = await Automation.insertMany(validatedAutomations);
+    
+    console.log(`Successfully created ${created.length} automations from natural language instructions`);
+    
+    res.json({
+      message: `Successfully created ${created.length} automation(s)`,
+      automations: created
+    });
 
   } catch (err) {
     console.error('Error rebuilding automations:', err);
-    res.status(500).json({ error: 'Failed to rebuild automations' });
+    res.status(500).json({ 
+      error: 'Failed to rebuild automations',
+      details: err.message 
+    });
   }
 });
 
 /**
  * GET /api/automations
- * Returns all automations for the authenticated user.
+ * Returns all active automations for the authenticated user.
  */
 router.get('/', requireAuth, async (req, res) => {
+  try {
+    const email = req.user.profile.emails[0].value;
+    const user  = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const automations = await Automation
+      .find({ userId: user._id, isActive: true })
+      .sort({ updatedAt: -1 });
+
+    res.json(automations);
+
+  } catch (err) {
+    console.error('Error fetching automations:', err);
+    res.status(500).json({ error: 'Failed to fetch automations' });
+  }
+});
+
+/**
+ * GET /api/automations/all
+ * Returns all automations (including inactive) for debugging purposes.
+ */
+router.get('/all', requireAuth, async (req, res) => {
   try {
     const email = req.user.profile.emails[0].value;
     const user  = await User.findOne({ email });
@@ -130,8 +213,8 @@ router.get('/', requireAuth, async (req, res) => {
     res.json(automations);
 
   } catch (err) {
-    console.error('Error fetching automations:', err);
-    res.status(500).json({ error: 'Failed to fetch automations' });
+    console.error('Error fetching all automations:', err);
+    res.status(500).json({ error: 'Failed to fetch all automations' });
   }
 });
 
@@ -207,9 +290,42 @@ router.patch('/:id', requireAuth, async (req, res) => {
 
 /**
  * DELETE /api/automations/:id
- * Deletes a single automation.
+ * Soft deletes a single automation by setting isActive to false.
  */
 router.delete('/:id', requireAuth, async (req, res) => {
+  try {
+    const email = req.user.profile.emails[0].value;
+    const user  = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const updated = await Automation.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        userId: user._id
+      },
+      {
+        isActive: false,
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ error: 'Automation not found' });
+    
+    console.log(`Soft deleted automation "${updated.label}" for user ${user.email}`);
+    res.json({ message: 'Automation deleted successfully' });
+
+  } catch (err) {
+    console.error('Error deleting automation:', err);
+    res.status(500).json({ error: 'Failed to delete automation' });
+  }
+});
+
+/**
+ * DELETE /api/automations/:id/permanent
+ * Permanently deletes a single automation from the database.
+ */
+router.delete('/:id/permanent', requireAuth, async (req, res) => {
   try {
     const email = req.user.profile.emails[0].value;
     const user  = await User.findOne({ email });
@@ -221,11 +337,13 @@ router.delete('/:id', requireAuth, async (req, res) => {
     });
 
     if (!deleted) return res.status(404).json({ error: 'Automation not found' });
-    res.json({ message: 'Automation deleted successfully' });
+    
+    console.log(`Permanently deleted automation "${deleted.label}" for user ${user.email}`);
+    res.json({ message: 'Automation permanently deleted' });
 
   } catch (err) {
-    console.error('Error deleting automation:', err);
-    res.status(500).json({ error: 'Failed to delete automation' });
+    console.error('Error permanently deleting automation:', err);
+    res.status(500).json({ error: 'Failed to permanently delete automation' });
   }
 });
 

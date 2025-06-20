@@ -67,7 +67,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/user-config', userConfigRoutes);
 
 // Automated Email Processing
-cron.schedule('*/15 * * * * *', async () => {  console.log('Running automated email processing...');
+cron.schedule('*/80 * * * * *', async () => {  console.log('Running automated email processing...');
   try {
     const users = await User.find(); // Fetch all users
     for (let user of users) {
