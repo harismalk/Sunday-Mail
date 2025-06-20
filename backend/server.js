@@ -28,7 +28,9 @@ const User = require('./models/User');
 
 const app = express();
 
+const isProduction = process.env.NODE_ENV === 'production';
 
+app.set('trust proxy', 1); // trust first proxy – needed when you deploy behind HTTPS
 
 app.use(cors({
   origin: process.env.FRONTEND_URL, // e.g., 'https://sunday-mail.vercel.app'
@@ -36,19 +38,15 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-const isProduction = process.env.NODE_ENV === 'production';
-
-app.set('trust proxy', 1); // trust first proxy – needed when you deploy behind HTTPS
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'your-secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true,               // only HTTPS in prod
+      secure: isProduction,               // only HTTPS in prod
       httpOnly: true,
-      sameSite: isProduction ? 'none' : 'none'  // allow OAuth redirect in dev
+      sameSite: isProduction ? 'none' : 'lax'  // allow OAuth redirect in dev
     }
   })
 );
