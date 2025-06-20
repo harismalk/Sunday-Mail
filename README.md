@@ -1,6 +1,6 @@
 # Sunday Mail
 
-> **Status:** 🚧 _This project is currently in testing. To request access, please email [sundaydeveleopers@gmail.com](mailto:sundaydeveleopers@gmail.com)_
+> **Status:** 🚧 _This project is currently in testing, under review by Google Cloud Authentication Services. To request access, please email [sundaydeveleopers@gmail.com](mailto:sundaydeveleopers@gmail.com)_
 
 ---
 
