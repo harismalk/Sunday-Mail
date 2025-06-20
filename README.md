@@ -67,7 +67,6 @@ cd ../frontend && npm install
 - **Frontend:**
   ```
   cd frontend
-  npm install
   npm start
   ```
 
