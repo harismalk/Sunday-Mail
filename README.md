@@ -1,4 +1,3 @@
-<div style="position: relative; padding-bottom: 64.8014440433213%; height: 0;"><iframe src="https://www.loom.com/embed/f35eb9def5b64e028a9e2d081e30e898?sid=a76e9afa-7585-4b57-8129-6b78daabd4f0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
 
 
 # Sunday Mail
