@@ -9,6 +9,7 @@
 ## Overview
 
 **Sunday Mail** is a modern, full-stack automation platform for email processing, built to help users manage, categorize, and automate their inbox workflows with ease.
+**Demo Link** https://www.loom.com/share/f35eb9def5b64e028a9e2d081e30e898?sid=18b2abf2-1285-4ce8-b2fb-07dbe3d9f55a
 
 ---
 
